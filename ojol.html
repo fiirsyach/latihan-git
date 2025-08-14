@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ojek Online</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom scrollbar hidden for cleaner mobile look */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+    body {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    /* For smaller font on badges */
+    .badge-small {
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 0.05rem 0.3rem;
+    }
+    .badge-negative {
+      background-color: #fad4d4;
+      color: #990000;
+    }
+    .badge-positive {
+      background-color: #cff4d4;
+      color: #267326;
+    }
+    /* Tab nav icon text */
+    .tab-text {
+      font-size: 0.7rem;
+      margin-top: 0.15rem;
+      font-weight: 600;
+    }
+    /* Tap to reveal circle*/
+    .reveal-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+      cursor: pointer;
+    }
+    .reveal-circle {
+      background: rgba(0,0,0,0.5);
+      border-radius: 50%;
+      padding: 0.6rem 1rem;
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 0 0 4px rgba(34,197,94,0.9);
+      transition: background-color 0.3s;
+    }
+    .reveal-circle:hover {
+      background-color: rgba(0,0,0,0.7);
+    }
+  </style>
+</head>
+<body class="bg-white max-w-md mx-auto min-h-screen flex flex-col">
+
+  <!-- Top Search Bar -->
+  <header class="flex items-center p-3 space-x-3 bg-white sticky top-0 z-20 border-b border-gray-200">
+    <div class="flex flex-1 bg-gray-100 rounded-full items-center px-4 py-2 text-gray-700 text-sm">
+      <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 11-10.6-10.6 7.5 7.5 0 0110.6 10.6z" />
+      </svg>
+      <input type="search" placeholder="Ayam Goreng" class="bg-transparent outline-none w-full placeholder:text-gray-400" aria-label="Search" />
+    </div>
+    <button aria-label="User Profile" class="relative w-10 h-10 rounded-full bg-gradient-to-tr from-green-600 to-green-400 flex items-center justify-center focus:ring-2 ring-green-500 ring-offset-1 ring-offset-white">
+      <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4S8 5.79 8 8s1.79 4 4 4zm0 2c-3.31 0-6 2.69-6 6v1h12v-1c0-3.31-2.69-6-6-6z"/></svg>
+      <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-semibold">1</span>
+    </button>
+  </header>
+
+  <!-- Hero Banner -->
+  <section class="relative mt-3 w-full overflow-hidden rounded-xl">
+    <img 
+      src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/96a11cc7-36a7-433e-b86a-b0e0f58f7f09.png" 
+      alt="Two men posing indoors, one wearing white shirt with neutral background, one wearing green ojek uniform with helmet and surprised expression"
+      class="w-full object-cover rounded-xl" 
+      onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/055cac94-48d9-4722-bf08-a7c8cae573f5.png';"
+    />
+    <div class="absolute top-4 right-4 bg-white flex items-center rounded-full shadow px-2 py-1 space-x-1 text-sm">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/810e4ee5-5eee-47b4-8d13-acf7041dee5f.png" alt="GoSend logo icon" class="w-7 h-5 object-contain" />
+      <span class="text-green-700 font-bold uppercase px-2 bg-green-200 rounded-full text-xs">INSTANT HEMAT</span>
+    </div>
+    <div class="absolute top-16 left-5 max-w-xs">
+      <h2 class="text-2xl font-extrabold text-green-600 leading-tight drop-shadow-md">
+        LEBIH<br />HEMAAAA<br />AAAAAT<br />
+        <span class="font-semibold text-sm text-gray-800 drop-shadow-none">TETAP CEPAT</span>
+      </h2>
+      <p class="text-xs text-gray-800 mt-1 drop-shadow-md">Dijemput dalam 30 menit</p>
+    </div>
+  </section>
+
+  <!-- Wallet & Actions -->
+  <section class="bg-white mt-5 rounded-xl p-4 shadow">
+    <div class="flex items-center justify-between border-b pb-3 mb-3">
+      <div class="flex items-center space-x-3">
+        <div class="bg-blue-200 rounded-full w-10 h-10 flex items-center justify-center">
+          <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" ><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2-1.343-2-3-2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 14v6"/></svg>
+        </div>
+        <div>
+          <p class="font-bold text-lg">Rp982</p>
+          <p class="text-xs text-gray-400">100 coins</p>
+        </div>
+      </div>
+      <div class="flex space-x-7 text-xs text-blue-600 font-semibold">
+        <button class="flex flex-col items-center space-y-1 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+          </svg>
+          <span>Bayar</span>
+        </button>
+        <button class="flex flex-col items-center space-y-1 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <circle cx="12" cy="12" r="10" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8m-4-4h8"/>
+          </svg>
+          <span>Top Up</span>
+        </button>
+        <button class="relative flex flex-col items-center space-y-1 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <circle cx="12" cy="12" r="10" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v8m-4-4h8" />
+          </svg>
+          <span>Lainnya</span>
+          <span class="absolute -top-2 -right-3 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">7</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Services Icons -->
+    <div class="grid grid-cols-5 gap-4 justify-items-center">
+      <!-- YoRide -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-green-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1596452b-eae2-4e77-aa4a-b7b87e9d7c68.png" alt="Green motorbike icon with 'GoRide' label" class="mx-auto" w-full transition-transform duration-300 transform hover:scale-110 onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c2826581-dd4c-4861-9bb9-6ecefbb24644.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">1RB!</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoRide</p>
+      </div>
+       </button>
+      <!-- YoCar -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-green-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/932655c2-821e-444f-9975-a6a0f61c7e04.png" alt="Green car icon with 'GoCar' label" class="mx-auto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d5593285-0435-402c-96a6-74c07eafc54e.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">6RB!</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoCar</p>
+      </div>
+       </button>
+      <!-- YoFood -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-red-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1549cffb-c3a5-4c64-8cf3-7a2f0230ce54.png" alt="Red fork and spoon icon for GoFood with discount label" class="mx-auto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/249f9c85-9a18-43a2-9973-40217191d6d2.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">-75%</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoFood</p>
+      </div>
+       </button>
+      <!-- YoSend -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-green-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c1fffa5d-131a-4a0b-882e-50f7826b146d.png" alt="Green parcel box icon for GoSend with price label" class="mx-auto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/7497a26e-f4a2-4b61-b057-4f7833fdef00.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">5RB!</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoSend</p>
+      </div>
+       </button>
+      <!-- Placeholder empty (empty on first row) to keep grid symmetry -->
+      <div></div>
+      
+      <!-- YoMart -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-red-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/60447969-5e6c-4dc5-81ca-be1618e33a66.png" alt="Red shopping cart icon for GoMart with discount label" class="mx-auto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0ae16460-1b01-4eb1-bbe2-234f1cbca8de.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">-60%</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoMart</p>
+      </div>
+       </button>
+      <!-- YoPay Pinjam -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-sky-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6a82d196-65bb-4feb-b295-c284f3b4ea2d.png" alt="Blue money bag icon for GoPay Pinjam with amount label" class="mx-auto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/8da61c9a-917d-4f5d-88e3-dbf2c22135ae.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">25JUTA</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoPay Pinjam</p>
+      </div>
+       </button>
+      <!-- YoFood Sehat -->
+       <button>
+      <div class="relative w-14 text-center">
+        <div class="relative rounded-xl bg-red-100 p-2">
+          <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/0afcc0a1-cca8-402b-b560-f9019870a93e.png" alt="Red healthy food bowl icon with discount label" class="mx-auto" onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/07a3902f-f9b6-4783-a00f-29b00b5b9eb9.png'">
+          <div class="absolute -top-2 left-0 bg-black text-white badge-small rounded-tr-lg rounded-br-lg px-1">-50%</div>
+        </div>
+        <p class="mt-1 text-xs font-semibold text-gray-700">YoFood Sehat</p>
+      </div>
+       </button>
+      <!-- Lainnya -->
+      <div class="relative w-14 text-center">
+        <button aria-label="Lainnya menu" class="bg-gray-100 hover:bg-gray-200 rounded-xl flex justify-center items-center p-2 w-14 h-14 focus:outline-none focus:ring-2 ring-green-500 ring-offset-1 ring-offset-white">
+          <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+          </svg>
+        </button>
+        <p class="mt-1 text-xs font-semibold text-gray-700">Lainnya</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Discount Banner -->
+  <section class="mt-5 px-4">
+    <button class="w-full bg-green-700 text-white rounded-lg py-3 flex items-center justify-center space-x-3 focus:outline-none focus:ring-4 ring-green-300">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-6a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      <span class="font-semibold text-sm">Diskon s.d. 10rb/transaksi. Yuk, langganan</span>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+    </button>
+  </section>
+
+  <!-- Revealing Cards -->
+  <section class="mt-5 px-4 flex space-x-4 overflow-x-auto pb-4">
+    <!-- Card 1 -->
+    <div class="relative w-44 h-60 bg-green-700 rounded-xl flex-shrink-0 overflow-hidden cursor-pointer" tabindex="0" aria-label="Reveal promo card 1" role="button" onkeydown="if(event.key==='Enter' || event.key===' ') {toggleReveal(this)}" onclick="toggleReveal(this)">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/371e8ffd-efdb-4eb0-833e-e2e56b5af43e.png" alt="Dark green gradient promo card background with blurred man face on left side" class="object-cover w-full h-full brightness-75" />
+      <div class="reveal-overlay">
+        <div class="reveal-circle">Tap to reveal</div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="relative w-44 h-60 bg-green-700 rounded-xl flex-shrink-0 overflow-hidden cursor-pointer" tabindex="0" aria-label="Reveal promo card 2" role="button" onkeydown="if(event.key==='Enter' || event.key===' ') {toggleReveal(this)}" onclick="toggleReveal(this)">
+      <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/1b6a6c95-177e-4ae1-9c43-8cf7d6e650bd.png" alt="Dark green gradient promo card background with blurred man face on left side" class="object-cover w-full h-full brightness-75" />
+      <div class="reveal-overlay">
+        <div class="reveal-circle">Tap to reveal</div>
+      </div>
+    </div>
+    <!-- Blank placeholder for spacing -->
+    <div class="w-12"></div>
+  </section>
+
+  <!-- Bottom Tab Navigation -->
+  <nav class="bg-white border-t border-gray-200 sticky bottom-0 z-30">
+    <ul class="flex justify-around max-w-md mx-auto py-2 text-gray-600">
+      <li>
+        <button class="flex flex-col items-center focus:outline-none text-green-700" aria-current="page" aria-label="Beranda (Home)">
+          <svg class="w-7 h-7 mb-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3l9 8h-3v9h-12v-9h-3l9-8z"/></svg>
+          <span class="tab-text font-semibold">Beranda</span>
+        </button>
+      </li>
+      <li>
+        <button class="flex flex-col items-center relative focus:outline-none" aria-label="Promo">
+          <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-1 2 1 3-5H7l3 5z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v2a2 2 0 002 2h10a2 2 0 002-2V3"/>
+          </svg>
+          <span class="tab-text font-semibold">Promo</span>
+          <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">1</span>
+        </button>
+      </li>
+      <li>
+        <button class="flex flex-col items-center focus:outline-none" aria-label="Aktivitas">
+          <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 17l4-4 4 4m0-8l-4 4-4-4"/>
+          </svg>
+          <span class="tab-text font-semibold">Aktivitas</span>
+        </button>
+      </li>
+      <li>
+        <button class="flex flex-col items-center relative focus:outline-none" aria-label="Chat">
+          <svg class="w-7 h-7 mb-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
+          <span class="tab-text font-semibold">Chat</span>
+          <span class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">1</span>
+        </button>
+      </li>
+    </ul>
+  </nav>
+
+  <script>
+    // Reveal cards on tap/click showing a sample message
+    function toggleReveal(card) {
+      if (!card.classList.contains('revealed')) {
+        card.classList.add('revealed');
+        const overlay = card.querySelector('.reveal-overlay');
+        if (overlay) {
+          overlay.innerHTML = '<div class="reveal-circle" style="background-color:#22c55e; box-shadow: 0 0 5px 3px #22c55e;">Promo Revealed!</div>';
+        }
+      } else {
+        card.classList.remove('revealed');
+        const overlay = card.querySelector('.reveal-overlay');
+        if (overlay) {
+          overlay.innerHTML = '<div class="reveal-circle">Tap to reveal</div>';
+        }
+      }
+    }
+  </script>
+</body>
+</html>
+
